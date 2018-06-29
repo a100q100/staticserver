@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"strconv"
+	_ "strconv"
 	"time"
 )
 
@@ -67,7 +67,8 @@ func upload(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "%v", "不允许的上传类型")
 			return
 		}
-		filename := strconv.FormatInt(time.Now().Unix(), 10) + fileext
+		//fmt.Println("up:", handler.Filename)
+		filename := handler.Filename //strconv.FormatInt(time.Now().Unix(), 10) + fileext
 		f, _ := os.OpenFile(Upload_Dir+filename, os.O_CREATE|os.O_WRONLY, 0660)
 		_, err = io.Copy(f, file)
 		if err != nil {
@@ -90,7 +91,7 @@ func StaticServer(w http.ResponseWriter, r *http.Request) {
 }
 
 func check(name string) bool {
-	ext := []string{".exe", ".js", ".png"}
+	ext := []string{".exe", ".js"}
 
 	for _, v := range ext {
 		if v == name {
